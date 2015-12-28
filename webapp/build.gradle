@@ -1,0 +1,57 @@
+ext {
+    aspectjVersion = '1.8.7'
+    springVersion = '4.2.3.RELEASE'
+    elasticActorsVersion = '0.23.0'
+}
+
+apply plugin: 'java'
+apply plugin: 'aspectj'
+apply plugin: 'war'
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+version = '1.0.0-SNAPSHOT'
+
+buildscript {
+    repositories {
+        maven {
+            url "https://maven.eveoh.nl/content/repositories/releases"
+        }
+    }
+
+    dependencies {
+        classpath "nl.eveoh:gradle-aspectj:1.6"
+    }
+}
+
+repositories {
+    mavenLocal()
+    jcenter()
+}
+
+jar {
+    manifest {
+        attributes("Implementation-Title": "ElasticActors TaxiApp",
+                   "Implementation-Version": version)
+    }
+}
+
+
+dependencies {
+    compile group: 'org.aspectj', name: 'aspectjrt', version: "${aspectjVersion}"
+    compile group: 'org.springframework', name: 'spring-context', version: "${springVersion}"
+    compile group: 'org.springframework', name: 'spring-aspects', version: "${springVersion}"
+    compile group: 'org.elasticsoftware.elasticactors', name: 'elasticactors-runtime', version: "${elasticActorsVersion}"
+    compile group: 'org.elasticsoftware.elasticactors', name: 'messaging-rabbitmq', version: "${elasticActorsVersion}"
+    compile group: 'org.elasticsoftware.elasticactors', name: 'backplane-cassandra2', version: "${elasticActorsVersion}"
+    testCompile group: 'org.testng', name: 'testng', version: '6.8.7'
+    aspectpath "org.springframework:spring-aspects:${springVersion}"
+}
+
+task copyConfiguration(type: Copy) {
+    from 'src/main/configuration'
+    into '/etc/taxiapp'
+}

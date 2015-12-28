@@ -27,3 +27,6 @@ test-output/
 */.externalToolBuilders/*
 bin/
 .DS_Store
+/.gradle
+out/
+
